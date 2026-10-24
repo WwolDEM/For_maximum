@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Разбор сайта «Максимум» · WwolDEM</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Разбор сайта фитнес-клуба «Максимум» (Отрадное) и концепция первого экрана. Подготовил WwolDEM.">
+<style>
+:root{
+  --bg:#1c1b1f; --panel:#26252a; --panel2:#2f2e33; --line:#3b3a40;
+  --text:#f4f4f2; --muted:#a3a2a8; --y:#eef23d; --red:#ff5a4e; --green:#4fd18b;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--y)}
+h1,h2,h3{line-height:1.08;letter-spacing:-.02em}
+h2{font-size:clamp(28px,4vw,44px);margin:10px 0 14px}
+.lead{color:var(--muted);max-width:640px;font-size:17px}
+.dots{background-image:radial-gradient(rgba(238,242,61,.16) 1.2px,transparent 1.3px);background-size:9px 9px}
+
+/* cover */
+.cover{padding:80px 0 72px;border-top:0;position:relative;overflow:hidden}
+.cover h1{font-size:clamp(40px,7vw,86px);font-weight:800;margin:18px 0 20px;text-transform:uppercase}
+.cover h1 em{font-style:normal;color:var(--y)}
+.meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:34px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.meta b{color:var(--text);font-weight:500}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:44px}
+.sum{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+.sum .n{font-family:var(--mono);font-size:30px;color:var(--y)}
+.sum p{color:var(--muted);font-size:14px;margin-top:4px}
+
+/* problems */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.card .num{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.card h3{font-size:21px}
+.card p{color:var(--muted);font-size:15px}
+.card .fix{font-size:14px;color:var(--text);border-left:2px solid var(--y);padding-left:12px}
+.shot{background:#111014;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px;min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.addr{display:flex;align-items:center;gap:8px;background:#2a292e;border-radius:999px;padding:8px 14px;font-family:var(--mono);font-size:13px}
+.warn{color:var(--red);display:flex;align-items:center;gap:6px;font-family:var(--sans);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:12px;border:1px solid var(--line);color:var(--muted)}
+.pill.bad{border-color:rgba(255,90,78,.5);color:var(--red)}
+.pill.ok{border-color:rgba(79,209,139,.5);color:var(--green)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.bar{height:8px;border-radius:9px;background:#2a292e;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red)}
+.tgprev{background:#1f2c3a;border-radius:10px;padding:10px 12px;border-left:3px solid #5aa9e6;font-family:var(--sans)}
+.tgprev .t{color:#8cc4f0;font-weight:600;font-size:13px}
+.tgprev .d{color:#7d8a96;font-size:12px}
+.tgprev .img{margin-top:8px;height:46px;border:1px dashed #3d4b58;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#6c7a87;font-size:11px}
+.phone-mini{width:150px;margin:0 auto;background:#2f2e33;border-radius:16px;padding:10px 0 12px;overflow:hidden;position:relative}
+.phone-mini .logo{width:54px;height:54px;border-radius:50%;border:2px solid var(--y);margin-left:-18px;display:flex;align-items:center;justify-content:center;color:var(--y);font-size:8px;font-weight:800}
+.phone-mini .sel{margin:10px 8px 0;background:#fff;color:#222;border-radius:12px;font-size:9px;padding:4px 8px;line-height:1.2;width:70%;height:22px;overflow:visible}
+.phone-mini .ring{position:absolute;inset:6px auto auto 2px;width:40px;height:62px;border:2px dashed var(--red);border-radius:10px}
+.phone-mini .ring2{position:absolute;left:4px;top:72px;width:112px;height:34px;border:2px dashed var(--red);border-radius:10px}
+
+/* verified-ok strip + mini illustrations */
+.okrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px}
+.okrow .l{font-family:var(--mono);font-size:12px;color:var(--muted);margin-right:6px}
+.pill.neu{border-color:rgba(238,242,61,.45);color:var(--y)}
+.clipdemo{position:relative;width:176px;height:92px;margin:0 auto;background:#2f2e33;border:2px solid #0d0c10;border-radius:16px;overflow:hidden}
+.clipdemo .t{position:absolute;left:12px;top:12px;font-weight:900;font-size:18px;line-height:1.05;text-transform:uppercase;white-space:nowrap;color:var(--text)}
+.clipdemo .t em{font-style:normal;color:var(--y)}
+.clipdemo .f{position:absolute;top:62px;height:18px;border-radius:9px;background:#fff}
+.clipdemo .cut{position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(45deg,rgba(255,90,78,.9) 0 3px,transparent 3px 6px)}
+/* plan */
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+.plan .col{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px}
+.plan .col.hi{background:var(--y);color:#141414;border-color:var(--y)}
+.plan .col.hi .tag,.plan .col.hi li::before{color:#141414}
+.plan h3{font-size:24px;margin:8px 0 16px}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.plan li{padding-left:22px;position:relative;font-size:15px}
+.plan li::before{content:"→";position:absolute;left:0;color:var(--y);font-family:var(--mono)}
+
+/* concept */
+.browser{margin-top:36px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#111014;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.chrome{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#232227;border-bottom:1px solid var(--line)}
+.chrome .d{width:10px;height:10px;border-radius:50%;background:#48474d}
+.chrome .u{flex:1;max-width:420px;margin:0 auto;background:#2f2e33;border-radius:999px;padding:5px 14px;font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center}
+.chrome .u b{color:var(--green);font-weight:500}
+.hero{position:relative;padding:22px 30px 34px;background:
+  radial-gradient(ellipse at 78% 40%,rgba(238,242,61,.18),transparent 55%),#18171b;overflow:hidden}
+.nav{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--muted);position:relative;z-index:2}
+.nav .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:800;letter-spacing:.04em;margin-right:auto}
+.nav .brand i{width:34px;height:34px;border-radius:50%;border:2px solid var(--y);display:flex;align-items:center;justify-content:center;font-style:normal;color:var(--y);font-size:10px}
+.nav .tel{color:var(--text);font-family:var(--mono);font-size:13px}
+.nav .btn-s{background:var(--y);color:#141414;border-radius:999px;padding:8px 14px;font-weight:700}
+.hgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;margin-top:40px;position:relative;z-index:2;align-items:center}
+.live{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--y);border:1px solid rgba(238,242,61,.4);border-radius:999px;padding:5px 12px}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.hero h3{font-size:56px;font-weight:900;text-transform:uppercase;margin:16px 0 14px;line-height:.98}
+.hero h3 span{color:var(--y)}
+.hero .sub{color:#cfcfd3;max-width:470px;font-size:16px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{border-radius:999px;padding:14px 22px;font-weight:700;font-size:15px;border:1px solid var(--line);color:var(--text);background:#232227}
+.btn.y{background:var(--y);color:#141414;border-color:var(--y)}
+.trust{display:flex;flex-wrap:wrap;gap:18px;margin-top:26px;font-size:13px;color:var(--muted)}
+.trust b{color:var(--text)}
+.led{position:relative;aspect-ratio:1/1;border-radius:22px;border:1px solid var(--line);background:#121115;display:flex;flex-direction:column;justify-content:space-between;padding:18px;overflow:hidden}
+.led canvas{width:100%;height:auto;display:block}
+.led .cap{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+.price{position:absolute;right:16px;bottom:44px;background:var(--y);color:#141414;border-radius:16px;padding:12px 16px;font-weight:800;line-height:1.1}
+.price small{display:block;font-weight:600;font-size:11px}
+.price b{font-size:26px}
+.zones{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px;position:relative;z-index:2}
+.zones span{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:999px;padding:7px 14px;font-size:13px;color:#d8d8dc}
+.note{margin-top:14px;font-size:13px;color:var(--muted);font-family:var(--mono)}
+
+.mobile-row{display:grid;grid-template-columns:320px 1fr;gap:36px;margin-top:40px;align-items:start}
+.phone{width:300px;border-radius:38px;border:8px solid #0d0c10;background:#18171b;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.phone .in{padding:16px 16px 20px;background:radial-gradient(ellipse at 80% 20%,rgba(238,242,61,.16),transparent 60%)}
+.phone .top{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.phone .top i{width:28px;height:28px;border-radius:50%;border:2px solid var(--y);display:flex;align-items:center;justify-content:center;font-style:normal;color:var(--y);font-size:8px;font-weight:800}
+.phone h4{font-size:30px;font-weight:900;text-transform:uppercase;line-height:1;margin:18px 0 10px}
+.phone h4 span{color:var(--y)}
+.phone p{font-size:13px;color:#cfcfd3}
+.phone .btn{display:block;text-align:center;margin-top:10px;padding:12px}
+.phone .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phone .two .btn{font-size:13px}
+.why ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+.why li{display:grid;grid-template-columns:34px 1fr;gap:12px}
+.why li b{font-family:var(--mono);color:var(--y);font-size:13px;padding-top:2px}
+.why li p{color:var(--muted);font-size:15px}
+.why li strong{color:var(--text);display:block;font-size:16px}
+
+/* map */
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:32px}
+.map div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:14px}
+.map div span{display:block;font-family:var(--mono);font-size:11px;color:var(--y);margin-bottom:6px}
+.map div.new{border-color:rgba(238,242,61,.45)}
+
+footer{padding:56px 0 70px;border-top:1px solid var(--line)}
+footer .f{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:end}
+footer h2{margin:8px 0 0}
+footer .c{font-family:var(--mono);font-size:14px;color:var(--muted);text-align:right}
+footer .c b{color:var(--text);font-weight:500}
+
+@media (max-width:860px){
+  .grid,.plan,.mobile-row{grid-template-columns:1fr}
+  .summary{grid-template-columns:1fr}
+  .map{grid-template-columns:1fr 1fr}
+  .phone{margin:0 auto}
+  footer .c{text-align:left}
+}
+@media (max-width:520px){
+  .map{grid-template-columns:1fr}
+}
+/* desktop mock keeps its desktop layout and scales down on small screens */
+.fit{position:relative;width:100%;margin-top:36px}
+.fit-inner{width:1080px;transform-origin:0 0}
+.fit .browser{margin-top:0}
+.view-label{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:28px}
+.view-label + .fit{margin-top:10px}
+/* version marker */
+.ver{position:fixed;top:10px;right:12px;z-index:50;font-family:var(--mono);font-size:11px;line-height:1;color:var(--y);border:1px solid rgba(238,242,61,.45);border-radius:6px;padding:4px 7px;background:rgba(28,27,31,.85);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="ver" aria-hidden="true">3</div>
+
+<!-- COVER -->
+<header class="cover dots">
+  <div class="wrap">
+    <div class="tag">Разбор сайта · концепция</div>
+    <h1>Фитнес-клуб<br><em>«Максимум»</em><br>Отрадное</h1>
+    <p class="lead">Сайт maximum-gym.ru аккуратный и в фирменных цветах. С осени на нём уже появились защищённое соединение и кнопка Max, но он по-прежнему работает как одна форма заявки, и часть людей уходит с него, не оставив контакт. Ниже: что мешает сейчас, что можно поправить быстро и как может выглядеть новый первый экран.</p>
+    <div class="meta">
+      <span>Подготовил: <b>WwolDEM</b></span>
+      <span>Дата: <b>24 октября 2026</b></span>
+      <span>Проверено: <b>на живом сайте, компьютер и ширина телефона</b></span>
+    </div>
+    <div class="summary">
+      <div class="sum"><div class="n">1 экран</div><p>на сайте только форма, слайдер зон и карта, нет цен, расписания и тренеров</p></div>
+      <div class="sum"><div class="n">0</div><p>телефонных номеров на сайте и ни одной кнопки «Позвонить»</p></div>
+      <div class="sum"><div class="n">1260 px</div><p>ширина страницы при экране 390 px: заголовок и поля формы уходят за край</p></div>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEMS -->
+<section>
+  <div class="wrap">
+    <div class="tag">01 · Что сейчас мешает</div>
+    <h2>Шесть мест, где клуб теряет людей</h2>
+    <p class="lead">Всё ниже проверено на живом сайте 24 октября. Ни одна из этих проблем не требует менять бренд: логотип, цвета и тон клуба остаются.</p>
+    <div class="okrow"><span class="l">Уже в порядке:</span><span class="pill ok">✓ защищённое соединение (https)</span><span class="pill ok">✓ кнопка «Написать в Max»</span><span class="pill ok">✓ уведомление о cookie и Метрике</span></div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="num">01 / связь</div>
+        <h3>Номера телефона на сайте нет</h3>
+        <div class="shot">
+          <div class="row"><span class="pill bad">✕ номер телефона</span><span class="pill bad">✕ кнопка «Позвонить»</span><span class="pill neu">Max: только после отправки формы</span></div>
+        </div>
+        <p>Многие не хотят заполнять форму и ждать звонка менеджера: им проще позвонить или написать самим. Сейчас единственный путь — оставить заявку. Кнопка «Написать в Max» появляется только после того, как форма отправлена, а карта внизу показывает лишь метку.</p>
+        <div class="fix">Номер, «Позвонить» и Max в шапке, на телефоне — закреплённая кнопка.</div>
+      </article>
+
+      <article class="card">
+        <div class="num">02 / мобильная версия</div>
+        <h3>На телефоне страница шире экрана</h3>
+        <div class="shot">
+          <div class="clipdemo"><div class="t">Тренируйся!<br><em>Безлимитный</em></div><div class="f" style="left:12px;width:104px"></div><div class="f" style="left:124px;width:104px"></div><div class="cut"></div></div>
+          <div class="row" style="justify-content:center"><span class="pill bad">экран 390 px</span><span class="pill bad">страница 1260 px</span></div>
+        </div>
+        <p>На ширине обычного смартфона появляется горизонтальная прокрутка: заголовок обрезается справа, поля «Имя» и «Телефон» стоят в ряд и не помещаются. Плашка про cookie закрывает часть формы.</p>
+        <div class="fix">Перестроить форму в одну колонку, убрать горизонтальную прокрутку.</div>
+      </article>
+
+      <article class="card">
+        <div class="num">03 / содержание</div>
+        <h3>Не хватает информации, чтобы решиться</h3>
+        <div class="shot">
+          <div class="row">
+            <span class="pill bad">цены карт</span><span class="pill bad">расписание</span><span class="pill bad">тренеры</span>
+            <span class="pill bad">детские секции</span><span class="pill bad">отзывы</span><span class="pill bad">пробная тренировка</span>
+          </div>
+          <div class="row"><span class="pill ok">«от 1800 ₽/мес»</span><span class="pill ok">список зон</span><span class="pill ok">карта</span></div>
+        </div>
+        <p>Человек сравнивает клубы рядом с домом. У «Максимума» круглосуточный зал, бойцовский клуб, детские секции и СПА, но на сайте всё это девять строчек в слайдере. На каталогах вроде Zoon у клуба описано намного больше: групповые программы, детские направления, дополнительные услуги.</p>
+        <div class="fix">Отдельные блоки с ценами, расписанием, тренерами и отзывами.</div>
+      </article>
+
+      <article class="card">
+        <div class="num">04 / поиск и ссылки</div>
+        <h3>Сайт почти не виден в поиске</h3>
+        <div class="shot">
+          <div class="tgprev">
+            <div class="t">Максимум Фитнес</div>
+            <div class="d">maximum-gym.ru · без описания</div>
+            <div class="img">нет картинки-превью</div>
+          </div>
+          <div class="row"><span class="pill bad">подпись логотипа: «X-Fit Иркутск»</span></div>
+        </div>
+        <p>Заголовок страницы — только «Максимум Фитнес», описания нет, у 12 картинок из 13 нет подписей. Подпись у логотипа осталась от другого клуба — «Фитнес-клуб X-Fit Иркутск». Страница одна, поэтому по запросам «бокс Отрадное» или «детские секции Отрадное» сайт не находится, а ссылка в мессенджере приходит без картинки.</p>
+        <div class="fix">Описания, превью для ссылок, правильные подписи, отдельные страницы под направления.</div>
+      </article>
+
+      <article class="card">
+        <div class="num">05 / старый адрес</div>
+        <h3>Поиск ведёт на адрес, который не открывается</h3>
+        <div class="shot">
+          <div class="addr"><span class="warn">✕ Не открывается</span><span style="color:var(--muted)">maximumgym.ru</span></div>
+          <div class="row"><span class="pill bad">в выдаче: «Фитнес-клуб МАКСИМУМ Отрадное»</span></div>
+        </div>
+        <p>В результатах поиска остаётся ссылка на домен без дефиса, maximumgym.ru. Он выдаёт страницу с ошибкой. Часть тех, кто ищет клуб, попадает именно туда и уходит.</p>
+        <div class="fix">Выяснить, чей это адрес, и настроить перенаправление на основной сайт.</div>
+      </article>
+
+      <article class="card">
+        <div class="num">06 / скорость</div>
+        <h3>Лишний вес и лишние секунды</h3>
+        <div class="shot">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px"><span>вес страницы</span><span>≈ 3,7 МБ</span></div>
+          <div class="bar"><i style="width:82%"></i></div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px"><span>загрузка на компьютере</span><span>≈ 2,7 с</span></div>
+          <div class="bar"><i style="width:45%"></i></div>
+        </div>
+        <p>32 запроса и почти 4 МБ ради одного экрана. Одна фотография весит как полноразмерный снимок (2352×1568), хотя показывается в небольшом слайдере. На мобильном интернете это заметно дольше. Документы о персональных данных скачиваются файлами .docx вместо обычных страниц.</p>
+        <div class="fix">Сжать фото, документы сделать страницами.</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN -->
+<section>
+  <div class="wrap">
+    <div class="tag">02 · Что можно сделать</div>
+    <h2>Два шага: быстро и по-настоящему</h2>
+    <div class="plan">
+      <div class="col">
+        <div class="tag">Шаг 1 · 1–2 дня</div>
+        <h3>Быстрые правки текущего сайта</h3>
+        <ul>
+          <li>Номер, «Позвонить» и Max на виду, на телефоне — закреплённая кнопка</li>
+          <li>Починить мобильную версию: форма в одну колонку, без горизонтальной прокрутки</li>
+          <li>Описание, картинка-превью и подписи к фото, убрать «X-Fit Иркутск»</li>
+          <li>Перенаправить старый адрес maximumgym.ru на основной сайт</li>
+          <li>Сжать фотографии, документы — обычными страницами</li>
+        </ul>
+      </div>
+      <div class="col hi">
+        <div class="tag">Шаг 2 · новый сайт</div>
+        <h3>Сайт, который продаёт клуб</h3>
+        <ul>
+          <li>Реальные фото или короткое видео зала на первом экране</li>
+          <li>Клубные карты с ценами и предложение «Пробная тренировка»</li>
+          <li>Расписание групповых занятий и страницы тренеров</li>
+          <li>Отдельные страницы: бойцовский клуб, детские секции, СПА</li>
+          <li>Отзывы клиентов, частые вопросы, контакты и карта</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section>
+  <div class="wrap">
+    <div class="tag">03 · Концепция первого экрана</div>
+    <h2>Как может выглядеть главная</h2>
+    <p class="lead">Цвета и характер клуба сохранены: тёмный фон и фирменный жёлтый. Главная мысль экрана — «открыто круглосуточно, приходи попробовать», а связаться можно в одно касание.</p>
+
+    <div class="view-label">Вид на компьютере</div>
+    <div class="fit" id="fitDesk"><div class="fit-inner">
+    <div class="browser" aria-label="Концепция первого экрана, вид на компьютере">
+      <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><div class="u"><b>🔒</b> maximum-gym.ru</div></div>
+      <div class="hero dots">
+        <div class="nav">
+          <div class="brand"><i>24/7</i>МАКСИМУМ</div>
+          <a class="hide">Карты</a><a class="hide">Расписание</a><a class="hide">Тренеры</a><a class="hide">Единоборства</a><a class="hide">Детям</a>
+          <span class="tel">+7 (___) ___-__-__</span>
+          <span class="btn-s">Записаться</span>
+        </div>
+        <div class="hgrid">
+          <div>
+            <span class="live">Открыто сейчас · круглосуточно</span>
+            <h3>Тренируйся<br>на максимум.<br><span>Круглосуточно.</span></h3>
+            <p class="sub">Тренажёрный зал, бойцовский клуб, групповые программы и СПА рядом с м. Отрадное.</p>
+            <div class="cta">
+              <span class="btn y">Бесплатная пробная тренировка</span>
+              <span class="btn">Позвонить</span>
+              <span class="btn">Написать в Max</span>
+            </div>
+            <div class="trust"><span><b>24/7</b> без выходных</span><span><b>10+</b> групповых направлений</span><span><b>ул. Отрадная, 16</b></span></div>
+          </div>
+          <div class="led">
+            <div class="cap"><span>OTRADNOE · MSK</span><span id="clock">--:--</span></div>
+            <canvas id="led" width="480" height="300" aria-label="Табло 24/7 в стиле светодиодного экрана"></canvas>
+            <div class="cap"><span>здесь — реальное фото зала</span><span>OPEN</span></div>
+            <div class="price"><small>безлимит</small><b>от 1 800 ₽</b><small>в месяц</small></div>
+          </div>
+        </div>
+        <div class="zones">
+          <span>Тренажёрный зал</span><span>Свободные веса</span><span>Функциональная зона</span><span>Бойцовский клуб</span><span>Детские секции</span><span>СПА и финская сауна</span><span>Кардиозона</span>
+        </div>
+      </div>
+    </div>
+    </div></div>
+    <p class="note">* Концепция для обсуждения. Цена, адрес и зоны взяты с текущего сайта клуба. Номер телефона — заглушка, потому что на сайте его нет: подставим актуальный. Фото — заглушка, на её место встают снимки клуба.</p>
+
+    <div class="view-label">Вид на телефоне</div>
+    <div class="mobile-row" style="margin-top:14px">
+      <div class="phone" aria-label="Концепция первого экрана, вид на телефоне">
+        <div class="in dots">
+          <div class="top"><i>24/7</i><span style="font-family:var(--mono);color:var(--muted)">☰</span></div>
+          <span class="live" style="margin-top:18px">Открыто сейчас</span>
+          <h4>Тренируйся на максимум. <span>Круглосуточно.</span></h4>
+          <p>Безлимит от 1 800 ₽/мес · м. Отрадное</p>
+          <span class="btn y">Пробная тренировка бесплатно</span>
+          <div class="two"><span class="btn">Позвонить</span><span class="btn">Max</span></div>
+          <p style="margin-top:14px;font-size:12px;color:var(--muted)">Круглосуточно · ул. Отрадная, 16</p>
+        </div>
+      </div>
+      <div class="why">
+        <div class="tag" style="margin-bottom:18px">Почему так</div>
+        <ul>
+          <li><b>01</b><div><strong>Главное — круглосуточно</strong><p>24/7 сейчас спрятано в логотипе. Это самое сильное отличие клуба, поэтому оно становится заголовком и живым табло.</p></div></li>
+          <li><b>02</b><div><strong>Пробная вместо «узнать подробнее»</strong><p>Прийти бесплатно проще, чем ждать звонка менеджера. Решение о карте человек принимает уже в зале.</p></div></li>
+          <li><b>03</b><div><strong>Связь в одно касание</strong><p>Звонок и Max рядом с главной кнопкой. На телефоне это первое, что видно без прокрутки.</p></div></li>
+          <li><b>04</b><div><strong>Доверие сразу</strong><p>Адрес, метро и режим работы стоят на первом экране, до формы. Отзывы идут сразу под ним и подбираются из проверенных источников.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SITE MAP -->
+<section>
+  <div class="wrap">
+    <div class="tag">04 · Структура нового сайта</div>
+    <h2>Что будет на сайте</h2>
+    <div class="map">
+      <div><span>01</span>Первый экран с пробной тренировкой</div>
+      <div class="new"><span>02 · новое</span>Клубные карты и цены</div>
+      <div class="new"><span>03 · новое</span>Расписание групповых занятий</div>
+      <div class="new"><span>04 · новое</span>Тренеры</div>
+      <div><span>05</span>Зоны клуба с фотогалереей</div>
+      <div class="new"><span>06 · новое</span>Бойцовский клуб — отдельная страница</div>
+      <div class="new"><span>07 · новое</span>Детские секции — отдельная страница</div>
+      <div><span>08</span>СПА и сауна</div>
+      <div class="new"><span>09 · новое</span>Отзывы клиентов</div>
+      <div class="new"><span>10 · новое</span>Частые вопросы</div>
+      <div><span>11</span>Контакты, карта, как добраться</div>
+      <div><span>12</span>Форма заявки на каждом шаге</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap f">
+    <div>
+      <div class="tag">Контакт</div>
+      <h2>Обсудим?</h2>
+    </div>
+    <div class="c">
+      <div><b>WwolDEM</b></div>
+      <div>дизайн и разработка сайтов</div>
+      <div>wwoldem.ru</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* LED dot-matrix "24/7" board */
+(function(){
+  const c=document.getElementById('led'); if(!c) return;
+  const x=c.getContext('2d');
+  const F={ '2':["01110","10001","00001","00010","00100","01000","11111"],
+            '4':["00010","00110","01010","10010","11111","00010","00010"],
+            '/':["00001","00010","00010","00100","01000","01000","10000"],
+            '7':["11111","00001","00010","00100","01000","01000","01000"]};
+  const txt="24/7", cols=txt.length*6-1, rows=7;
+  const W=c.width,H=c.height, s=Math.min(W/(cols+2),H/(rows+4)), ox=(W-cols*s)/2, oy=(H-rows*s)/2;
+  let t=0;
+  function draw(){
+    x.clearRect(0,0,W,H);
+    for(let ci=0;ci<cols;ci++)for(let r=0;r<rows;r++){
+      const li=Math.floor(ci/6), cc=ci%6, g=F[txt[li]];
+      const on = cc<5 && g[r][cc]==='1';
+      const cx=ox+ci*s+s/2, cy=oy+r*s+s/2;
+      const wave=.88+.12*Math.sin(t/14-ci*.35);
+      x.beginPath(); x.arc(cx,cy,s*.36,0,Math.PI*2);
+      if(on){ x.fillStyle=`rgba(238,242,61,${wave})`; x.shadowColor='rgba(238,242,61,.8)'; x.shadowBlur=s*.6; }
+      else { x.fillStyle='rgba(255,255,255,.06)'; x.shadowBlur=0; }
+      x.fill();
+    }
+    x.shadowBlur=0; t++;
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(draw);
+  }
+  draw();
+  const k=document.getElementById('clock');
+  function tick(){k.textContent=new Date().toLocaleTimeString('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',minute:'2-digit'})}
+  tick(); setInterval(tick,15000);
+})();
+
+/* scale the desktop mock to the available width */
+(function(){
+  const box=document.getElementById('fitDesk'); if(!box) return;
+  const inner=box.firstElementChild, W=1080;
+  function fit(){
+    const s=Math.min(1, box.clientWidth/W);
+    inner.style.transform='scale('+s+')';
+    box.style.height=Math.ceil(inner.offsetHeight*s)+'px';
+  }
+  fit(); addEventListener('resize',fit); addEventListener('load',fit);
+  if(window.ResizeObserver) new ResizeObserver(fit).observe(box);
+})();
+</script>
+</body>
+</html>
