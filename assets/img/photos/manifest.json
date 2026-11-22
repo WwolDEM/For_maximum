@@ -1,0 +1,242 @@
+{
+  "cardio": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "dumbbells": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "free-weights": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "functional": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "group": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "hall": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "hero": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "machines": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "ring": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  },
+  "trainer-akmal-karimberdiev": {
+    "widths": [
+      {
+        "w": 432,
+        "h": 432
+      }
+    ]
+  },
+  "trainer-aleksey-filippychev": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-anna-kuchina": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-diana-abdullina": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-dmitriy-morozov": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-dmitriy-sapych": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-ekaterina-malukha": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-evgeniy-lavrenko": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-margarita-kustova": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-mariya-gordon": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-natalya-bogatova": {
+    "widths": [
+      {
+        "w": 492,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-nikita-nabiev": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-oleg-zhvyrko": {
+    "widths": [
+      {
+        "w": 432,
+        "h": 768
+      }
+    ]
+  },
+  "trainer-sergey-borodavko": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "trainer-tamila-katina": {
+    "widths": [
+      {
+        "w": 480,
+        "h": 640
+      }
+    ]
+  },
+  "treadmills": {
+    "widths": [
+      {
+        "w": 640,
+        "h": 427
+      },
+      {
+        "w": 1280,
+        "h": 853
+      }
+    ]
+  }
+}

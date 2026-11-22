@@ -1,0 +1,8 @@
+# Пока сайт черновик (site.indexing = false в assets/data/club.js), все страницы закрыты метатегом noindex.
+# Обход не запрещаем: иначе поисковик не увидит noindex. Перед запуском: indexing: true и node tools/build.mjs
+User-agent: *
+Allow: /
+Disallow: /tools/
+Disallow: /incoming/
+
+Sitemap: https://maximum-club.example/sitemap.xml
