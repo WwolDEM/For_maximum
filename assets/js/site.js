@@ -5,9 +5,10 @@
    3. LED-табло на главной: 24/7 → часы по Москве → бегущая строка (из версии 9)
    3б. «24/7» из точек в блоке «О клубе» на главной (выключатель — LED_247 ниже)
    4. Анимации в духе версии 9: появление, заголовки, счётчики, шапка, бегущая строка, наклон карточек
-   5. Форма заявки: предвыбор интереса, маска телефона, отправка (демо или 1С) */
+   5. Форма заявки: метки UTM, предвыбор интереса, маска телефона, отправка (демо или прокси → 1С) */
 
-// сюда адрес приёма заявок от подрядчика 1С (null = демо-режим, заявка никуда не уходит)
+// адрес нашего прокси lead.php на хостинге сайта, например '/api/lead.php' (null = демо-режим, заявка никуда не уходит).
+// Адрес вебхука 1С сюда НЕ писать: он только в lead-config.php на сервере (см. README, «Заявки → 1С: Фитнес»)
 var LEAD_ENDPOINT = null;
 
 // «24/7» из точек в блоке «О клубе»: false — обычная надпись текстом
@@ -813,6 +814,21 @@ var INTERESTS = CLUB.leadInterests || {
   })();
 
   /* ---------- 5. форма заявки ---------- */
+  // метки utm_* запоминаем на странице входа: форма обычно на другой странице сайта
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  (function () {
+    var q = new URLSearchParams(location.search), got = {}, any = false;
+    UTM_KEYS.forEach(function (k) { var v = (q.get(k) || '').trim().slice(0, 200); if (v) { got[k] = v; any = true; } });
+    if (any) try { sessionStorage.setItem('utm', JSON.stringify(got)); } catch (e) {}
+  })();
+  function utm() {
+    var u = null;
+    try { u = JSON.parse(sessionStorage.getItem('utm') || 'null'); } catch (e) {}
+    var out = {};
+    if (u) UTM_KEYS.forEach(function (k) { if (typeof u[k] === 'string' && u[k]) out[k] = u[k].slice(0, 200); });
+    return out;
+  }
+
   var form = $('#lead-form');
   if (!form) return;
 
@@ -916,33 +932,44 @@ var INTERESTS = CLUB.leadInterests || {
     form.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
+  // comment для 1С одной строкой: «Что интересует: …; Тренер: …; Удобнее: …; Страница: …; Источник: new-site»
+  function leadComment() {
+    var parts = ['Что интересует: ' + interest.value];
+    if (picked && picked.label && interest.value === picked.option) parts.push('Предложение: ' + picked.label);
+    if (trainer) parts.push('Тренер: ' + trainer);
+    parts.push('Удобнее: ' + contactValue());
+    parts.push('Страница: ' + form.elements.page.value);
+    parts.push('Источник: ' + form.elements.source.value);
+    return parts.join('; ').replace(/[\r\n]+/g, ' ');
+  }
+
+  var sending = false; // защита от двойной отправки: второй клик и Enter, пока идёт запрос, ничего не делают
+  function unlock() { sending = false; submitBtn.disabled = false; submitBtn.classList.remove('loading'); submitBtn.textContent = submitText; }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (sending || form.classList.contains('sent')) return;
     status.className = 'form-status'; status.textContent = ''; fallback.hidden = true;
-    if (form.elements.company.value) return; // антиспам: поле видят только боты
+    // ловушка для ботов: поле hp не видно людям. Бот видит «Спасибо», заявка никуда не уходит
+    if (form.elements.hp.value) { sending = true; setTimeout(function () { done(false); }, 500); return; }
     if (!nameEl.value.trim()) return fail('Напишите, как к вам обращаться.', nameEl);
     if (digits(phone.value).length !== 11) return fail('Проверьте номер: нужно 10 цифр после +7.', phone);
     if (!consent.checked) return fail('Нужно согласие на обработку персональных данных.', consent);
 
+    sending = true; submitBtn.disabled = true;
     submitBtn.classList.add('loading'); submitBtn.textContent = 'Отправляем…';
 
     if (!LEAD_ENDPOINT) { setTimeout(function () { done(true); }, 500); return; }
 
-    var lead = {
-      name: nameEl.value.trim(),
-      phone: '+' + digits(phone.value),
-      contact: contactValue(),
-      interest: interest.value,
-      consent: true,
-      source: form.elements.source.value,
-      page: form.elements.page.value,
-      subject: form.elements.subject.value,
-      trainer: trainer
-    };
-    fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(lead) })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); done(false); })
+    // поля как у вебхука 1С: last_name и email не отправляем; hp — ловушка, у людей пустая
+    var lead = { name: nameEl.value.trim(), phone: digits(phone.value), comment: leadComment(), hp: '' };
+    var u = utm();
+    for (var k in u) lead[k] = u[k];
+    fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(lead), credentials: 'omit' })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok || !d || d.ok !== true) throw new Error('HTTP ' + r.status); }); })
+      .then(function () { sending = false; done(false); })
       .catch(function () {
-        submitBtn.classList.remove('loading'); submitBtn.textContent = submitText;
+        unlock();
         fail('Не получилось отправить, позвоните или напишите в Telegram.');
         fallback.hidden = false;
         fadeIn(fallback);
@@ -952,7 +979,7 @@ var INTERESTS = CLUB.leadInterests || {
   $('.again', form).addEventListener('click', function () {
     form.classList.remove('sent');
     fadeIn($('.form-fields', form));
-    submitBtn.classList.remove('loading'); submitBtn.textContent = submitText;
+    unlock();
     nameEl.focus();
   });
 })();
