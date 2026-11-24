@@ -457,7 +457,7 @@ var INTERESTS = CLUB.leadInterests || {
     big.classList.add('led247');
     panel.appendChild(cv);
 
-    var W = 0, H = 0, dpr = 1, pitch = BASE_PITCH, ox = 0, oy = 0, barH = 0;
+    var W = 0, H = 0, FH = 0, dpr = 1, pitch = BASE_PITCH, ox = 0, oy = 0, barH = 0;
     var actionbar = $('.actionbar');
     function layout() {
       pitch = Math.min(BASE_PITCH, Math.floor(big.clientWidth / COLS * 10) / 10);
@@ -468,6 +468,9 @@ var INTERESTS = CLUB.leadInterests || {
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       // offset*: без учёта transform, поэтому анимация появления карточки не сбивает координаты
       ox = big.offsetLeft + pitch / 2; oy = big.offsetTop + pitch / 2;
+      // рассыпанные точки летают только над текстом карточки — в полосе до заголовка «Круглосуточно…»
+      var next = big.nextElementSibling;
+      FH = Math.max(oy + ROWS * pitch, Math.min(H, next ? next.offsetTop - 6 : H));
       barH = actionbar ? actionbar.offsetHeight : 0; // на телефоне низ экрана занят панелью «Звонок · Telegram · Заявка»
     }
 
@@ -492,7 +495,7 @@ var INTERESTS = CLUB.leadInterests || {
         c = lit[i];
         t = (p - c.lag) / (1 - LAG); t = t < 0 ? 0 : t > 1 ? 1 : t;
         e = 1 - Math.pow(1 - t, 3);
-        var x = r + c.sx * (W - 2 * r), y = r + c.sy * (H - 2 * r);
+        var x = r + c.sx * (W - 2 * r), y = r + c.sy * (FH - 2 * r);
         x += (ox + c.gx * pitch - x) * e; y += (oy + c.gy * pitch - y) * e;
         ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, 6.2832);
       }

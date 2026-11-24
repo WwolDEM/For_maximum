@@ -415,7 +415,8 @@ html.led-js::after{display:none} /* экран закрыл canvas из site.js 
 
 /* «24/7» из точек (класс led247 ставит site.js; без него — обычный текст) */
 .led247-host{position:relative}
-.led247-host > canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.led247-host > canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.led247-host > :not(canvas){position:relative;z-index:1} /* текст карточки — над точками и их свечением */
 .panel .big.led247{color:transparent}
 .led247-host > canvas.lit{animation:led-breathe 2.8s ease-in-out infinite}
 @keyframes led-breathe{50%{opacity:.8}}
