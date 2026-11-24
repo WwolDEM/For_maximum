@@ -213,6 +213,8 @@ var INTERESTS = CLUB.leadInterests || {
   if (burger && menu) {
     var setMenu = function (open) {
       menu.classList.toggle('open', open);
+      document.documentElement.classList.toggle('menu-open', open && innerWidth <= 640); // страница под меню не прокручивается
+      document.dispatchEvent(new Event('menu-toggle'));
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     };
@@ -811,6 +813,59 @@ var INTERESTS = CLUB.leadInterests || {
         requestAnimationFrame(step);
       })();
     };
+  })();
+
+  /* ---------- телефон: нижняя панель уезжает, когда мешает ---------- */
+  // клавиатура (фокус в поле ввода), открытое меню, видна форма заявки — там свои кнопки
+  (function () {
+    var bar = $('.actionbar');
+    if (!bar) return;
+    var typing = false, formSeen = false;
+    var upd = function () { bar.classList.toggle('away', typing || formSeen || document.documentElement.classList.contains('menu-open')); };
+    document.addEventListener('focusin', function (e) { if (e.target.matches('input:not([type=checkbox]):not([type=radio]), select, textarea')) { typing = true; upd(); } });
+    document.addEventListener('focusout', function () { setTimeout(function () { var a = document.activeElement; typing = !!(a && a.matches && a.matches('input:not([type=checkbox]):not([type=radio]), select, textarea')); upd(); }, 50); });
+    document.addEventListener('menu-toggle', upd);
+    var lead = $('#lead-form');
+    if (lead && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { formSeen = en[0].isIntersecting; upd(); }, { rootMargin: '0px 0px -10% 0px' }).observe(lead);
+    }
+  })();
+
+  /* ---------- крупные заголовки: длинное слово не рвётся по буквам ---------- */
+  // если слово шире строки (iPhone SE, «КОНФИДЕНЦИАЛЬНОСТИ»), уменьшаем кегль заголовка, пока слово не поместится
+  (function () {
+    var heads = [].slice.call(document.querySelectorAll('h1, h2.h2, .h1, .h2'));
+    if (!heads.length) return;
+    function fit() {
+      heads.forEach(function (h) {
+        h.style.fontSize = '';
+        if (!h.clientWidth) return;
+        var base = parseFloat(getComputedStyle(h).fontSize), size = base, min = Math.max(20, base * 0.6);
+        var w = h.clientWidth; // ширину фиксируем: в сетке заголовок иначе растягивается под длинное слово
+        h.style.maxWidth = w + 'px'; h.style.overflowWrap = 'normal'; h.style.wordBreak = 'keep-all';
+        while (h.scrollWidth > w + 1 && size > min) { size -= 1; h.style.fontSize = size + 'px'; }
+        h.style.maxWidth = ''; h.style.overflowWrap = ''; h.style.wordBreak = '';
+      });
+    }
+    var t;
+    var later = function () { clearTimeout(t); t = setTimeout(fit, 120); };
+    fit();
+    // шрифт Inter 900 может догрузиться позже первого замера — меряем ещё раз
+    if (document.fonts) { if (document.fonts.ready) document.fonts.ready.then(fit); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', later); }
+    window.addEventListener('load', fit);
+    window.addEventListener('resize', later);
+    window.addEventListener('orientationchange', later);
+  })();
+
+  /* ---------- карта на «Контактах»: iframe прячем до загрузки, пока видна заглушка ---------- */
+  // страница виджета Яндекса сначала показывает служебные ссылки неоформленным синим текстом
+  (function () {
+    var map = $('.map'), fr = map && $('iframe', map);
+    if (!fr) return;
+    map.classList.add('wait');
+    var show = function () { map.classList.remove('wait'); };
+    fr.addEventListener('load', function () { setTimeout(show, 400); });
+    setTimeout(show, 8000); // если load уже прошёл или не придёт — карта всё равно появится
   })();
 
   /* ---------- 5. форма заявки ---------- */

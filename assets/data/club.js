@@ -13,7 +13,7 @@
       // ЧЕРНОВИК: false — все страницы закрыты от поисковиков (noindex). Перед запуском: true и `node tools/build.mjs`
       indexing: false,
       // метка версии макета в правом верхнем углу; растёт с каждой заметной итерацией
-      version: 25,
+      version: 27,
       name: 'Фитнес-клуб «Максимум»',
       shortName: 'Максимум'
     },
@@ -34,7 +34,8 @@
         { name: 'ВКонтакте', url: 'https://vk.com/maximum_otradnoe', needsCheck: 'Страница не открылась при сборе данных' },
         { name: 'Instagram*', url: 'https://www.instagram.com/maximum_otradnoe' }
       ],
-      map: { oid: '190765558241', url: 'https://yandex.ru/maps/org/maksimum/190765558241/' }
+      // categoryUrl — вторая служебная ссылка виджета Яндекса («Фитнес-клуб»), дублируем её в подписи под картой
+      map: { oid: '190765558241', url: 'https://yandex.ru/maps/org/maksimum/190765558241/', categoryUrl: 'https://yandex.ru/maps/213/moscow/category/fitness_club/184107363/' }
     },
 
     // реквизиты оператора персональных данных — подвал, privacy.html, consent.html

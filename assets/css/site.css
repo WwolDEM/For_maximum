@@ -61,7 +61,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .on-y .form .todo{background:var(--y-soft);border-color:var(--y-line);color:var(--y)}
 
 /* ---------- type ---------- */
-h1,h2,h3{line-height:1.02;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:anywhere}
+h1,h2,h3{line-height:1.02;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
+/* крупные заголовки капсом (Inter 900): без лишнего пробела слова слипаются */
+h1,h2,.h1,.h2,.panel .big{word-spacing:.12em}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--y)}
 .eyebrow::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:10px;vertical-align:1px}
 .h1{font-size:clamp(34px,4.6vw,56px);font-weight:900;text-transform:uppercase;line-height:1;margin-top:16px}
@@ -164,7 +166,7 @@ h1,h2,h3{line-height:1.02;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3vw,32px)}
 .panel h3{font-size:22px;letter-spacing:-.01em}
 .panel p{color:var(--muted);margin-top:10px}
-.panel .big{font-size:clamp(40px,5vw,60px);font-weight:900;text-transform:uppercase;color:var(--y);line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.panel .big{font-size:clamp(40px,5vw,60px);font-weight:900;text-transform:uppercase;color:var(--y);line-height:1;letter-spacing:-.01em;margin-bottom:16px}
 .panel .btn-row{margin-top:22px}
 
 /* ---------- карточки-переходы на разделы ---------- */
@@ -226,7 +228,7 @@ h1,h2,h3{line-height:1.02;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:
 .coach .role{color:var(--y);font-family:var(--mono);font-size:12px;margin-top:8px}
 .coach p{color:var(--muted);font-size:15px;margin-top:12px}
 .coach.star{border-color:var(--y-line)}
-.coach .medal{display:inline-flex;align-items:baseline;gap:6px;margin-top:16px;background:var(--y);color:var(--ink);border-radius:var(--r-sm);padding:8px 12px;font-weight:900;font-size:22px;letter-spacing:-.02em}
+.coach .medal{display:inline-flex;align-items:baseline;gap:6px;margin-top:16px;background:var(--y);color:var(--ink);border-radius:var(--r-sm);padding:8px 12px;font-weight:900;font-size:22px;letter-spacing:-.01em}
 .coach .medal small{font-size:12px;font-weight:600;letter-spacing:0}
 /* заглушки: одинаковые компактные карточки */
 .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
@@ -307,8 +309,19 @@ h1,h2,h3{line-height:1.02;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:
 .contact-list .btn-row{margin-top:4px}
 .contact-list .inline{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
 .contact-list .inline .todo{margin-left:0}
-.map{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);min-height:420px;background:var(--surface);position:relative}
-.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* два телефона — каждый на своей строке */
+.contact-list .tel-list{display:flex;flex-direction:column;align-items:flex-start}
+.tel-sep{display:inline-block;margin:0 16px;color:var(--muted)}
+a[href^="tel:"]{white-space:nowrap} /* номер не рвётся на две строки */
+.map{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);min-height:420px;background:var(--surface);display:flex;flex-direction:column}
+.map-frame{position:relative;flex:1;min-height:0}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;transition:opacity .3s}
+/* пока виджет Яндекса грузится, он показывает свои служебные ссылки синим текстом — прячем iframe до загрузки (site.js) */
+.map.wait iframe{opacity:0}
+/* те же ссылки — мелкой серой подписью под картой, в левом нижнем углу карточки */
+.map-caption{padding:6px 14px;border-top:1px solid var(--line);font-size:12px;line-height:1.4;color:var(--muted)}
+.map-caption a{display:inline-block;margin-right:14px;padding:4px 0;color:var(--muted)}
+.map-caption a:hover{color:var(--text)}
 /* видно, пока карта не загрузилась или если Яндекс недоступен */
 .map-fallback{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;padding:24px;color:var(--muted);font-size:14px}
 .map-fallback b{color:var(--text);font-size:18px}
@@ -486,6 +499,55 @@ html.led-js::after{display:none} /* экран закрыл canvas из site.js 
   .actionbar .btn{min-height:48px;padding:10px 8px;font-size:14px;gap:6px}
   .actionbar .btn svg{width:16px;height:16px}
   body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+}
+/* ---------- телефон: доводка (версия 27) ---------- */
+@media (max-width:640px){
+  /* текст для чтения — не мельче 14 px */
+  .note,.fine{font-size:14px;line-height:1.5}
+  .chip,.trainer-card .chip{font-size:14px}
+  .trainer-card .chip{padding:6px 11px}
+  .coach .role,.stub .role,.trainer-card .role{font-size:14px}
+  .price-tag small,.price-tag a{font-size:14px}
+  .price-table td small.age{font-size:14px}
+  .field label,.field legend,.consent,.picked,.form-done .demo{font-size:14px}
+  .live{font-size:13px}
+  .go .num,.motto > span{font-size:14px}
+  .footer{font-size:14px}
+  /* подписи капсом моноширинным — служебные метки, не мельче 12 px */
+  .kids-table th,.price-table th,.card .tag,.contact-list small,.footer h2,.board-top,.board-bot,.ph::after{font-size:12px}
+  /* кнопки в строке — на всю ширину, ровной колонкой (кроме мессенджеров и соцсетей в списке контактов) */
+  main .btn-row > .btn{flex:1 1 100%}
+  .contact-list .btn-row > .btn{flex:0 1 auto}
+  /* зоны касания */
+  .footer a{min-width:44px}
+  .map-caption{padding:0 14px}
+  .map-caption a{display:inline-flex;align-items:center;min-height:44px;padding:0}
+  /* два телефона в реквизитах: второй — с новой строки, без разделителя в начале строки */
+  .prose .tel-sep{display:none}
+  .prose .tel-sep + a{display:flex;width:max-content;align-items:center;min-height:44px}
+  .map-col > .btn{align-self:stretch}
+  /* клубные карты по две в ряд: цена помещается */
+  .terms .card .price{font-size:26px}
+  /* якоря и фокус не прячутся под нижней панелью */
+  html{scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  /* нижняя панель уезжает, пока открыта клавиатура, видна форма или открыто меню */
+  .actionbar{transition:transform .25s ease,visibility .25s}
+  .actionbar.away{transform:translateY(calc(100% + 2px));visibility:hidden}
+  /* меню — до низа экрана, страница под ним не прокручивается */
+  .mobile-menu{bottom:0;max-height:none;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  html.menu-open{overflow:hidden}
+}
+/* узкие телефоны: таблицы цен без горизонтальной прокрутки */
+@media (max-width:400px){
+  .price-table th,.price-table td,.kids-table th,.kids-table td{padding:12px 10px}
+  .card{padding:20px}
+  .card .btn{padding-inline:16px}
+  .price-table td,.kids-table td{font-size:14px}
+  .price-table th,.kids-table th{letter-spacing:.06em}
+}
+/* iPhone SE и уже: клубные карты по одной */
+@media (max-width:359px){
+  .terms.grid-4,.terms .grid-4,.grid-4.terms{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
