@@ -897,6 +897,9 @@ var INTERESTS = CLUB.leadInterests || {
   // предвыбор интереса из ссылки kontakty.html?interest=...#form
   var params = new URLSearchParams(location.search);
   var picked = INTERESTS[params.get('interest')];
+  // подпись предложения: цена карты — только если в club.js memberships.showPrices: true
+  var SHOW_PRICES = !!(CLUB.memberships && CLUB.memberships.showPrices);
+  var pickedLabel = picked && picked.label ? picked.label + (SHOW_PRICES && picked.price ? ' — ' + String(picked.price).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0') + '\u00a0₽' : '') : '';
   form.elements.subject.value = (picked || INTERESTS.trial).subject;
   if (picked) interest.value = picked.option;
 
@@ -907,7 +910,7 @@ var INTERESTS = CLUB.leadInterests || {
   if (form.elements.trainer) form.elements.trainer.value = trainer;
 
   var pickedText = [];
-  if (picked && picked.label) pickedText.push('Заявка по предложению: ' + picked.label);
+  if (pickedLabel) pickedText.push('Заявка по предложению: ' + pickedLabel);
   if (trainer) pickedText.push('Тренер: ' + trainer);
   if (pickedText.length) {
     var p = $('.picked', form);
@@ -993,7 +996,7 @@ var INTERESTS = CLUB.leadInterests || {
   // comment для 1С одной строкой: «Что интересует: …; Тренер: …; Удобнее: …; Страница: …; Источник: new-site»
   function leadComment() {
     var parts = ['Что интересует: ' + interest.value];
-    if (picked && picked.label && interest.value === picked.option) parts.push('Предложение: ' + picked.label);
+    if (pickedLabel && interest.value === picked.option) parts.push('Предложение: ' + pickedLabel);
     if (trainer) parts.push('Тренер: ' + trainer);
     parts.push('Удобнее: ' + contactValue());
     parts.push('Страница: ' + form.elements.page.value);
